@@ -20,16 +20,14 @@ const Items: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [newItem, setNewItem] = useState('');
 
-  useEffect(() => {
-    // Fetch items from the server when the component mounts
-    fetchItems();
-  }, []);
 
+  // console.log(items)
   const fetchItems = async () => {
     try {
       dispatch(setLoading(true));
-      const response = await axios.get('http://localhost:3000/items');
-      dispatch(setItems(response.data.items));
+      const response = await axios.get('https://deliverylink-api-y58r.onrender.com');
+      dispatch(setItems(response.data));
+      console.log(response.data)
     } catch (error) {
       console.error('Error fetching items:', error);
       dispatch(setError('Failed to fetch items'));
@@ -38,19 +36,24 @@ const Items: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    // Fetch items from the server when the component mounts
+    fetchItems();
+  }, []);
+
+
   const handleAddItem = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/items", {
+      const response = await axios.post("https://deliverylink-api-y58r.onrender.com", {
         title: newItem,
-        userId: user?.id, // Include userId when adding a new item
+        userId: user?.id, 
       });
+  
       const { success, newItem: addedItem } = response.data;
 
       if (success) {
         dispatch(addItem(addedItem));
         setNewItem('');
-      } else {
-        // Handle add item failure
       }
     } catch (error) {
       console.error('Error adding item:', error);
@@ -71,7 +74,7 @@ const Items: React.FC = () => {
     const editedTitle = items.find((item) => item.id === id)?.editedTitle;
     if (editedTitle) {
       try {
-        const response = await axios.put(`http://localhost:3000/items/${id}`, {
+        const response = await axios.put(`https://deliverylink-api-y58r.onrender.com/${id}`, {
           title: editedTitle,
         });
 
@@ -91,7 +94,7 @@ const Items: React.FC = () => {
 
   const handleDeleteItem = async (id: number) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/items/${id}`);
+      const response = await axios.delete(`https://deliverylink-api-y58r.onrender.com/${id}`);
       const { success } = response.data;
 
       if (success) {
@@ -103,6 +106,7 @@ const Items: React.FC = () => {
       console.error('Error deleting item:', error);
     }
   };
+
 
   return (
     <div className='w-full'>
@@ -123,11 +127,11 @@ const Items: React.FC = () => {
           Add Item
         </button>
       </div>
-      {items.length === 0 && !loading ? (
-        <p className='text-lg'>No items available.</p>
+      {items?.length === 0 && !loading ? (
+        <p className='text-lg font-[Muli] text-center'>No items available.</p>
       ) : (
         <ul className='flex justify-center items-center flex-col'>
-          {items.map((item) => (
+          {items?.map((item) => (
             <li className='w-2/4' key={item.id}>
               {item.isEditing ? (
                 <div className='flex items-center'>

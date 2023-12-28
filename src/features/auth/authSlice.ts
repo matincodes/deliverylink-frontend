@@ -29,7 +29,6 @@ const authSlice = createSlice({
       state.user = null;
     },
     signup: (state, action: PayloadAction<User>) => {
-      state.isAuthenticated = true;
       state.user = action.payload;
     },
     setAuthenticated: (state, action: PayloadAction<boolean>) => {

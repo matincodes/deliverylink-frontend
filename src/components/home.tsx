@@ -25,14 +25,11 @@ const Home: React.FC = () => {
 
         checkAuthentication();
 
-        if (!isAuthenticated) {
-            navigate('/');
-        }
+        // if (!isAuthenticated) {
+        //     navigate('/');
+        // }
     }, [dispatch, isAuthenticated, navigate]);
 
-    if (!isAuthenticated) {
-        return null;
-    }
 
     const handleLogout = async () => {
         try {

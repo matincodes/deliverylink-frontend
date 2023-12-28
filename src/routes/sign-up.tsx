@@ -1,33 +1,33 @@
 // SignUp.tsx
 import { useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../app/store';
-import { signup } from '../features/auth/authSlice';
+// import { useDispatch } from 'react-redux';
+// import { AppDispatch } from '../app/store';
+// import { signup } from '../features/auth/authSlice';
 import DeliveryLinkImage from '../assets/deliverylink.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-  const navigate = useNavigate();
   const [userName, setUserName] = useState(''); // Update to use userName instead of email
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
+  const navigate = useNavigate();
+
+  axios.defaults.withCredentials = true
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/auth/signup', {
-        userName, // Update to use userName instead of email
+      const response = await axios.post('https://deliverylink-api-y58r.onrender.com', {
+        userName, 
         password,
       });
 
-      const { success, user} = response.data;
+      const { success } = response.data;
 
       if (success) {
-
-        dispatch(signup(user));
-        navigate('/home');
-  
+        // dispatch(signup(user));
+        navigate("/")
       }
     } catch (error) {
       console.error('Error during signup:', error);

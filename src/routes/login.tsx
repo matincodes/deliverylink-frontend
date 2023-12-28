@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 import { login } from '../features/auth/authSlice';
 import DeliveryLinkImage from '../assets/deliverylink.png';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,20 +15,19 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
 
+  axios.defaults.withCredentials
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
-        userName, // Update to use userName instead of email
+      const response = await axios.post('https://deliverylink-api-y58r.onrender.com', {
+        userName, 
         password,
-      }, {
-        withCredentials: true, // Include cookies
       });
 
       const { success, user} = response.data;
 
       if (success) {
-
+        console.log("login")
         dispatch(login(user));
         navigate('/home');
       }
